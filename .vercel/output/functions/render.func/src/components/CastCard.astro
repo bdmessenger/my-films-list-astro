@@ -1,0 +1,13 @@
+---
+const { name, character, headshot } = Astro.props;
+---
+
+<figure class="select-none w-48 bg-gray-50 rounded overflow-hidden text-blue-900 mr-4 last:mr-0">
+    <picture>
+        <img width="600" height="900" alt={`${name}'s headshot`} class="bg-gray-600 w-full h-56 object-cover object-center" src={headshot} />
+    </picture>
+    <figcaption class="p-4">
+        <h2 class="font-medium">{ name }</h2>
+        <span class="text-sm">{ character }</span>
+    </figcaption>
+</figure>

@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CastCard from '../../components/CastCard.astro';
+import { fetchFilmById } from '../../utils';
+const film = await fetchFilmById(Astro.params.id);
+
+// No film found
+if (!film) {
+    return Astro.redirect('/404');
+}
+---
+
+<Layout title={`My Films List - ${film.title}`}>
+    <main class="-mt-5">
+        <section id="film-top" class="bg-blue-900 w-full overflow-hidden relative mb-5">
+            <img width="1920" height="800" class="absolute bg-blue-500 top-0 left-0 w-full h-64 md:h-full opacity-60 md:opacity-10 object-cover object-center z-0" src={film.backdrop} />
+            <div class="container flex flex-col md:flex-row md:items-center max-w-7xl mx-auto px-4 md:px-8 py-8 relative z-[1]">
+                <div class="w-32 md:w-2/5 lg:w-2/6 xl:w-1/4 rounded overflow-hidden mb-10 md:mb-0 md:mr-10 xl:mr-16">
+                    <img width="600" height="900" class="w-full bg-blue-300" src={film.poster} />
+                </div>
+                <div class="py-4 md:py-0 md:w-3/5 lg:w-4/6 xl:w-3/4">
+                    <h2 class="text-3xl lg:text-4xl mb-3 overflow-hidden">
+                        <span class="font-bold">{film.title}</span>
+                        {' '}({film.year})
+                    </h2>
+                    <ul class="mb-5 text-sm lg:text-base leading-6">
+                        <li class="inline-block text-sm opacity-80 mr-1 border px-[4px] pt-[0.55px] pb-[2px]">{film.rating}</li>
+                        <li class="inline-block before:content-['•'] before:mr-2 mr-1">{film.date} ({film.country})</li>
+                        <li class="mt-2 md:mt-0 block md:inline align-top md:before:content-['•'] md:before:mr-2 mr-1">{film.genres.join(', ')}</li>
+                        <li class="inline-block md:before:content-['•'] md:before:mr-2">{film.runtime}</li>
+                    </ul>
+                    <h4 class="mb-5 font-medium italic opacity-70">{film.tagline}</h4>
+                    <div class="mb-6">
+                        <h5 class="font-medium mb-1 text-lg">Overview</h5>
+                        <p class="text-sm">{film.overview}</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-5 md:gap-5">
+                        {Object.values(film.crew).map((worker) => (
+                            <div>
+                                <h4 class="font-medium">{worker.name}</h4>
+                                <span class="inline-block text-sm leading-0">{worker.jobs.join(', ')}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="cast" class="mb-6 container max-w-7xl mx-auto lg:px-4">
+            <h3 class="mb-5 text-4xl font-semibold px-4 lg:px-0">Cast</h3>
+            <div class="overflow-auto">
+                <div class="flex w-max pb-5 px-4 lg:px-0">
+                    {
+                        film.cast.map((actor) => (
+                            <CastCard key={actor.id} name={actor.name} character={actor.character} headshot={actor.image} />
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+        <section id="recommendations" class="mb-5 container max-w-7xl mx-auto px-4">
+            <h3 class="mb-6 text-4xl font-semibold">Recommendations</h3>
+            <div class="overflow-auto">
+                <div class="flex w-max pb-5">
+                    {
+                        film.recommendations.map((film) => (
+                            <div class="mr-5 last:mr-0">
+                                <a href={`/film/${film.id}`}>
+                                    <figure class="w-72 bg-gray-50 rounded h-full overflow-hidden">
+                                        <picture>
+                                            <img class="bg-gray-600 w-full h-40 object-cover object-center" width="500" height="281" alt={`${film.title} cover`} src={film.backdrop}/>
+                                        </picture>
+                                        <figcaption class="text-blue-900 px-4 py-6">
+                                            <h4 class="font-medium text-xl">{film.title}</h4>
+                                        </figcaption>
+                                    </figure>
+                                </a>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    *::-webkit-scrollbar {
+        background-color: rgb(37 99 235);
+        border-radius: 10px;
+        height: 8px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: rgb(29 78 216);
+        border-radius: 10px;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: rgb(30 58 138);
+    }
+
+    @media only screen and (max-device-width: 1024px) {
+        /* hide scrollbar but allow scrolling */
+        * {
+            -ms-overflow-style: none; /* for Internet Explorer, Edge */
+            scrollbar-width: none; /* for Firefox */
+            overflow-y: scroll; 
+        }
+
+        *::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
+    }
+</style>

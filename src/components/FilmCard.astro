@@ -1,0 +1,12 @@
+---
+const { film } = Astro.props;
+---
+
+<div class="group bg-blue-800 overflow-hidden rounded-lg w-full relative cursor-pointer drop-shadow-[13px_12px_8px_-2px_rgba(15,33,84,0.79)]">
+    <a href={`/film/${film.id}`}>
+        <div class="relative w-full pt-[50%] opacity-50 lg:opacity-70 group-hover:opacity-10 lg:group-hover:opacity-30 transition-opacity duration-150 ease-in">
+            <img width="500" height="281" class="w-full absolute top-1/2 left-0 translate-y-[-50%]" src={film.backdropURL}/>
+        </div>
+        <div class="transition-opacity duration-150 ease-in lg:opacity-0 group-hover:opacity-100 flex absolute top-0 left-0 w-full h-full justify-center items-center text-center text-2xl p-4">{film.title}</div>
+    </a>
+</div>
