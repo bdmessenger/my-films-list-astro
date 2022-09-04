@@ -69,9 +69,9 @@ export const fetchFilmById = async (id) => {
 
         const directors = Object.keys(crew).filter(name => crew[name].jobs.find(job => job === 'Director'))
 
-        const cast = filmCredits.cast.map(({id, name, character, profile_path}) => ({id, name, character, image: profile_path ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${profile_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg'}))
+        const cast = filmCredits.cast.splice(0, 8).map(({id, name, character, profile_path}) => ({id, name, character, image: profile_path ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${profile_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg'}))
 
-        const recommendations = filmRecommendations.results.splice(0, 15).map(({id, title, backdrop_path: path}) => ({id, title, backdrop: path ? `https://image.tmdb.org/t/p/w500${path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-4ee37443c461fff5bc221b43ae018a5dae317469c8e2479a87d562537dd45fdc.svg'}))
+        const recommendations = filmRecommendations.results.splice(0, 8).map(({id, title, backdrop_path: path}) => ({id, title, backdrop: path ? `https://image.tmdb.org/t/p/w500${path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-4ee37443c461fff5bc221b43ae018a5dae317469c8e2479a87d562537dd45fdc.svg'}))
 
         return {
             backdrop: filmDetails.backdrop_path ? `https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${filmDetails.backdrop_path}` : 'https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-4ee37443c461fff5bc221b43ae018a5dae317469c8e2479a87d562537dd45fdc.svg',
